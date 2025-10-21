@@ -1,0 +1,1 @@
+REVOKE UPDATE ON insurance_db.claim FROM 'Client Iliam'@'localhost';

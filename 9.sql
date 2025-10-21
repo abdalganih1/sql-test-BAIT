@@ -1,0 +1,1 @@
+ALTER USER 'Viewer Fady'@'localhost' IDENTIFIED BY 'F@dy_1234';
