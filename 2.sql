@@ -1,45 +1,61 @@
--- a. إنشاء مدير النظام ومنحه الصلاحيات الكاملة
+-- ===================================================================
+-- إنشاء المستخدمين ومنح الصلاحيات حسب متطلبات السؤال
+-- ===================================================================
+
+-- أ. إنشاء مدير النظام SysAdmin بكلمة مرور 12345678_Sys@dmin
+-- ومنحه كامل الصلاحيات على جميع قواعد البيانات
 DROP USER IF EXISTS 'SysAdmin'@'localhost';
-CREATE USER 'SysAdmin'@'localhost' IDENTIFIED BY 'Sys@dmin_12345678';
+CREATE USER 'SysAdmin'@'localhost' IDENTIFIED BY '12345678_Sys@dmin';
 GRANT ALL PRIVILEGES ON *.* TO 'SysAdmin'@'localhost' WITH GRANT OPTION;
 
--- b. إنشاء مسؤول المستشفى ومنحه الصلاحيات الكاملة على قاعدة بيانات المستشفى
-DROP USER IF EXISTS 'HospitalAdmin Ayla'@'localhost';
-CREATE USER 'HospitalAdmin Ayla'@'localhost' IDENTIFIED BY 'Admin_12345';
-GRANT ALL PRIVILEGES ON hospital_db.* TO 'HospitalAdmin Ayla'@'localhost';
+-- ب. إنشاء مسؤول المستشفى Ayla بكلمة مرور 12345_Admin
+-- ومنحه كامل الصلاحيات على قاعدة بيانات المستشفى
+DROP USER IF EXISTS 'Ayla'@'localhost';
+CREATE USER 'Ayla'@'localhost' IDENTIFIED BY '12345_Admin';
+GRANT ALL PRIVILEGES ON hospital_db.* TO 'Ayla'@'localhost';
 
--- c. إنشاء مسؤول التأمين ومنحه الصلاحيات الكاملة على قاعدة بيانات شركة التأمين
-DROP USER IF EXISTS 'InsuranceAdmin Reema'@'localhost';
-CREATE USER 'InsuranceAdmin Reema'@'localhost' IDENTIFIED BY 'Insurance_123';
-GRANT ALL PRIVILEGES ON insurance_db.* TO 'InsuranceAdmin Reema'@'localhost';
+-- ج. إنشاء مسؤول التأمين Reema بكلمة مرور 123_Insurance
+-- ومنحه كامل الصلاحيات على قاعدة بيانات شركة التأمين
+DROP USER IF EXISTS 'Reema'@'localhost';
+CREATE USER 'Reema'@'localhost' IDENTIFIED BY '123_Insurance';
+GRANT ALL PRIVILEGES ON insurance_db.* TO 'Reema'@'localhost';
 
--- d. إنشاء مستخدم الطبيب ومنحه الصلاحيات المحددة
-DROP USER IF EXISTS 'Doctor Aram'@'localhost';
-CREATE USER 'Doctor Aram'@'localhost' IDENTIFIED BY 'Doctor_12345';
--- i. صلاحيات على جداول الأطباء في القاعدتين
-GRANT SELECT, INSERT, UPDATE ON hospital_db.doctor TO 'Doctor Aram'@'localhost';
-GRANT SELECT, INSERT, UPDATE ON insurance_db.doctor TO 'Doctor Aram'@'localhost';
--- ii. صلاحيات على جدول الزيارات
-GRANT SELECT, INSERT, UPDATE ON hospital_db.appointment TO 'Doctor Aram'@'localhost';
--- iii. صلاحية القراءة من جدول المرضى
-GRANT SELECT ON hospital_db.patient TO 'Doctor Aram'@'localhost';
--- iv. صلاحية القراءة من جدول العملاء
-GRANT SELECT ON insurance_db.client TO 'Doctor Aram'@'localhost';
--- v. صلاحيات على جدول المطالبة
-GRANT SELECT, INSERT ON insurance_db.claim TO 'Doctor Aram'@'localhost';
+-- د. إنشاء الطبيب Aram بكلمة مرور 12345_Doctor
+-- ومنحه الصلاحيات المطلوبة:
+DROP USER IF EXISTS 'Aram'@'localhost';
+CREATE USER 'Aram'@'localhost' IDENTIFIED BY '12345_Doctor';
 
+-- القراءة والإدخال والتحديث على جدول الطبيب في قاعدة بيانات المستشفى
+GRANT SELECT, INSERT, UPDATE ON hospital_db.doctor TO 'Aram'@'localhost';
 
--- e. إنشاء مستخدم العميل ومنحه الصلاحيات المحددة
-DROP USER IF EXISTS 'Client Iliam'@'localhost';
-CREATE USER 'Client Iliam'@'localhost' IDENTIFIED BY 'Client_123456';
-GRANT SELECT ON insurance_db.client TO 'Client Iliam'@'localhost';
-GRANT SELECT, UPDATE ON insurance_db.claim TO 'Client Iliam'@'localhost';
+-- القراءة والإدخال والتحديث على جدول الطبيب في قاعدة بيانات شركة التأمين
+GRANT SELECT, INSERT, UPDATE ON insurance_db.doctor TO 'Aram'@'localhost';
 
--- f. إنشاء موظف الاستعلامات ومنحه صلاحيات القراءة فقط
-DROP USER IF EXISTS 'Viewer Fady'@'localhost';
-CREATE USER 'Viewer Fady'@'localhost' IDENTIFIED BY 'Viewer_123456';
-GRANT SELECT ON hospital_db.* TO 'Viewer Fady'@'localhost';
-GRANT SELECT ON insurance_db.* TO 'Viewer Fady'@'localhost';
+-- القراءة والإدخال والتحديث على جدول الزيارة في قاعدة بيانات المستشفى
+GRANT SELECT, INSERT, UPDATE ON hospital_db.appointment TO 'Aram'@'localhost';
+
+-- القراءة على جدول المريض
+GRANT SELECT ON hospital_db.patient TO 'Aram'@'localhost';
+
+-- القراءة على جدول العميل
+GRANT SELECT ON insurance_db.client TO 'Aram'@'localhost';
+
+-- القراءة والإدخال على جدول المطالبة
+GRANT SELECT, INSERT ON insurance_db.claim TO 'Aram'@'localhost';
+
+-- هـ. إنشاء العميل Iliam بكلمة مرور Client_123456
+-- ومنحه صلاحيات القراءة على جدول العميل والقراءة مع التحديث على جدول المطالبة
+DROP USER IF EXISTS 'Iliam'@'localhost';
+CREATE USER 'Iliam'@'localhost' IDENTIFIED BY 'Client_123456';
+GRANT SELECT ON insurance_db.client TO 'Iliam'@'localhost';
+GRANT SELECT, UPDATE ON insurance_db.claim TO 'Iliam'@'localhost';
+
+-- و. إنشاء موظف الاستعلامات Fady بكلمة مرور 123456_Viewer
+-- ومنحه صلاحيات القراءة على كل جداول قاعدتي البيانات
+DROP USER IF EXISTS 'Fady'@'localhost';
+CREATE USER 'Fady'@'localhost' IDENTIFIED BY '123456_Viewer';
+GRANT SELECT ON hospital_db.* TO 'Fady'@'localhost';
+GRANT SELECT ON insurance_db.* TO 'Fady'@'localhost';
 
 -- تطبيق الصلاحيات
 FLUSH PRIVILEGES;

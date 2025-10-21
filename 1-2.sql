@@ -1,10 +1,14 @@
--- إنشاء قاعدة بيانات شركة التأمين
+-- ===================================================================
+-- إنشاء قاعدة بيانات شركة التأمين والجداول الخاصة بها
+-- ===================================================================
+
+-- إنشاء قاعدة بيانات شركة التأمين مع دعم اللغة العربية
 CREATE DATABASE IF NOT EXISTS insurance_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- استخدام قاعدة البيانات
 USE insurance_db;
 
--- إنشاء جدول العملاء
+-- إنشاء جدول العملاء (client_id, name, policy_number, password, last_password_change)
 CREATE TABLE IF NOT EXISTS client (
     client_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
@@ -13,7 +17,7 @@ CREATE TABLE IF NOT EXISTS client (
     last_password_change TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- إنشاء جدول الأطباء في شركة التأمين
+-- إنشاء جدول الأطباء (doctor_id, name, specialty, password, last_password_change, dual_password)
 CREATE TABLE IF NOT EXISTS doctor (
     doctor_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
@@ -23,7 +27,7 @@ CREATE TABLE IF NOT EXISTS doctor (
     dual_password VARCHAR(255)
 );
 
--- إنشاء جدول المطالبات
+-- إنشاء جدول المطالبات (claim_id, client_id, doctor_id, amount, status)
 CREATE TABLE IF NOT EXISTS claim (
     claim_id INT PRIMARY KEY AUTO_INCREMENT,
     client_id INT,

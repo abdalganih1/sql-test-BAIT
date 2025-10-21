@@ -1,10 +1,14 @@
--- إنشاء قاعدة بيانات المستشفى
+-- ===================================================================
+-- إنشاء قاعدة بيانات المستشفى والجداول الخاصة بها
+-- ===================================================================
+
+-- إنشاء قاعدة بيانات المستشفى مع دعم اللغة العربية
 CREATE DATABASE IF NOT EXISTS hospital_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- استخدام قاعدة البيانات
 USE hospital_db;
 
--- إنشاء جدول المرضى
+-- إنشاء جدول المرضى (patient_id, name, phone, insurance_id)
 CREATE TABLE IF NOT EXISTS patient (
     patient_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
@@ -12,7 +16,7 @@ CREATE TABLE IF NOT EXISTS patient (
     insurance_id VARCHAR(100)
 );
 
--- إنشاء جدول الأطباء في المستشفى
+-- إنشاء جدول الأطباء (doctor_id, name, specialty, password, last_password_change)
 CREATE TABLE IF NOT EXISTS doctor (
     doctor_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
@@ -21,7 +25,7 @@ CREATE TABLE IF NOT EXISTS doctor (
     last_password_change TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- إنشاء جدول الزيارات
+-- إنشاء جدول الزيارات (appointment_id, patient_id, doctor_id, date, status)
 CREATE TABLE IF NOT EXISTS appointment (
     appointment_id INT PRIMARY KEY AUTO_INCREMENT,
     patient_id INT,
